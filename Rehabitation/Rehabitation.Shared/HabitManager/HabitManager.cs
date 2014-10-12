@@ -35,16 +35,22 @@ namespace Rehabitation.HabitManager
             }
         }
 
-        public void MoveHabit(HabitControl habit, int position)
-        {
-
-        }
-
-
-
         internal static void MoveHabit(HabitControl habitControl, double total)
         {
+            int index = HabitControls.IndexOf(habitControl);
+            int movedPositions = (int)Math.Ceiling(total / habitControl.ActualHeight);
+            int startFromIndex = Math.Max(0, Math.Min(index - movedPositions, HabitControls.Count));
 
+            Debug.WriteLine(index + " " + movedPositions + " " + startFromIndex);
+
+            HabitControl swappingElement = HabitControls[startFromIndex];
+            HabitControls[index] = swappingElement;
+            HabitControls[startFromIndex] = habitControl;
+
+            Debug.WriteLine("Swapped " + swappingElement.txtHabitName.Text + " with " + habitControl.txtHabitName.Text);
+
+            //HabitItems.Instance.Move(index, startFromIndex);
+            
         }
     }
 }

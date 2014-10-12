@@ -12,27 +12,32 @@
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Add" Label="add"/>
+            <AppBarButton Icon="Add" Label="add" Click="AppBarButton_Click_1"/>
             <AppBarButton Icon="AllApps" Label="edit" Click="AppBarButton_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
-    
-    <ScrollViewer>
-    <StackPanel>
-        <ItemsControl x:Name="HabitList" ItemsSource="{Binding Habits}" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ItemsControl.ItemContainerTransitions>
-                <TransitionCollection>
-                    <EntranceThemeTransition/>
-                    <RepositionThemeTransition/>
-                </TransitionCollection>
-            </ItemsControl.ItemContainerTransitions>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <habit:HabitControl Name="HabitControl" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </StackPanel>
-    </ScrollViewer>
+
+    <Grid>
+
+        <habit:AddHabit x:Name="AddHabitPanel" RenderTransformOrigin="0.5,0.5" Canvas.ZIndex="100" />
+
+        <ScrollViewer>
+            <StackPanel>
+                <ItemsControl x:Name="HabitList" ItemsSource="{Binding Habits}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ItemsControl.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition/>
+                            <RepositionThemeTransition/>
+                        </TransitionCollection>
+                    </ItemsControl.ItemContainerTransitions>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <habit:HabitControl Name="HabitControl"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 
 </Page>

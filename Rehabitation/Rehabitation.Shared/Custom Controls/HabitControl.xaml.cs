@@ -1,4 +1,5 @@
-﻿using Rehabitation.Models;
+﻿using Rehabitation.Helpers;
+using Rehabitation.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,15 +48,42 @@ namespace Rehabitation.Custom_Controls
         static void OnIsActiveChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             HabitControl habitControl = (HabitControl)obj;
-            if ((bool)args.NewValue == true)
+            var newvalue = (bool)args.NewValue;
+            if (newvalue)
             {
-                habitControl.PanelDetails.Opacity = 0.20;
-                habitControl.PanelEdit.Visibility = Visibility.Visible;
+                habitControl.StorySlideFromLeft.AutoReverse = false;
+                habitControl.StorySlideFromRight.AutoReverse = false;
+                habitControl.FadeOpacity.AutoReverse = false;
+
+                habitControl.StorySlideFromLeft.Begin();
+                habitControl.StorySlideFromRight.Begin();
+                habitControl.FadeOpacity.Begin();
             }
             else
             {
-                habitControl.PanelDetails.Opacity = 1;
-                habitControl.PanelEdit.Visibility = Visibility.Collapsed;
+                TimeSpan getTime;
+
+                habitControl.StorySlideFromLeft.SkipToFill();
+                getTime = habitControl.StorySlideFromLeft.GetCurrentTime();
+                habitControl.StorySlideFromLeft.Seek(getTime);
+
+                habitControl.StorySlideFromRight.SkipToFill();
+                getTime = habitControl.StorySlideFromRight.GetCurrentTime();
+                habitControl.StorySlideFromRight.Seek(getTime);
+
+                habitControl.FadeOpacity.SkipToFill();
+                getTime = habitControl.FadeOpacity.GetCurrentTime();
+                habitControl.FadeOpacity.Seek(getTime);
+                //habitControl.StorySlideFromLeft.Seek(new TimeSpan(0, 0, 1));
+
+
+                habitControl.StorySlideFromLeft.AutoReverse = true;
+                habitControl.StorySlideFromRight.AutoReverse = true;
+                habitControl.FadeOpacity.AutoReverse = true;
+
+                habitControl.StorySlideFromLeft.Resume();
+                habitControl.StorySlideFromRight.Resume();
+                habitControl.FadeOpacity.Resume();
             }
         }
 
@@ -65,21 +93,22 @@ namespace Rehabitation.Custom_Controls
         {
             this.InitializeComponent();
             Translater = panelTranslator;
+            HabitManager.HabitManager.AddHabit(this);
         }
 
         #region Dragging the element
         double start = 0;
         double end = 0;
-
-        CoreDispatcher dispatcher;
+        double totalAbs;
+        double height;
+        double total;
+        CoreDispatcher dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
         
         private void DragStart(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            Debug.WriteLine("Started");
-
             e.Handled = true;
             start = panelTranslator.TranslateY;
-            dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+            height = this.ActualHeight;
         }
 
         private async void DragDelta(object sender, ManipulationDeltaRoutedEventArgs e)
@@ -88,29 +117,36 @@ namespace Rehabitation.Custom_Controls
             Point deltaPoint = e.Delta.Translation;
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                panelTranslator.TranslateY += deltaPoint.Y;
+               // panelTranslator.TranslateY += deltaPoint.Y;
             });
+            
+            end = e.Cumulative.Translation.Y;
+            totalAbs = Math.Abs(end - start);
+            total = (end - start);
+
+            if (totalAbs >= height / 2)
+            {
+               // HabitManager.HabitManager.MoveHabit(this, total);
+            }
         }
 
         private void DragEnd(object sender, ManipulationCompletedRoutedEventArgs e)
         {
             e.Handled = true;
-            end = e.Cumulative.Translation.Y;
-            var total = (end - start);
-
-            if (total <= this.Height / 2)
+            if (totalAbs <= this.ActualHeight)
             {
                 var time = new Duration(new TimeSpan(0, 0, 0, 0, 400));
-                var translation = new TranslateTransform()
-                {
-                    X = 0,
-                    Y = start
-                };
+                Storyboard slideBack = new Storyboard();
+                DoubleAnimation doubleAnim = new DoubleAnimation();
+                doubleAnim.From = total;
+                doubleAnim.To = 0;
+                doubleAnim.Duration = time;
+                slideBack.Children.Add(doubleAnim);
+                Storyboard.SetTarget(doubleAnim, this.panelTranslator);
+                Storyboard.SetTargetProperty(doubleAnim, "TranslateY");
+                slideBack.Begin();
             }
-            else
-            {
-                HabitManager.HabitManager.MoveHabit(this, total);
-            }
+            
         }
         #endregion
 
@@ -121,10 +157,6 @@ namespace Rehabitation.Custom_Controls
 
         #region Add/Remove
 
-        public void Add()
-        {
-            HabitManager.HabitManager.AddHabit(this);
-        }
 
         public void Remove()
         {
@@ -137,7 +169,6 @@ namespace Rehabitation.Custom_Controls
         {
             Remove();
         }
-
     }
 
 }

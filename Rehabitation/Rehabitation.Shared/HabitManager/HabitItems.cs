@@ -23,17 +23,6 @@ namespace Rehabitation.HabitManager
         public HabitItems()
         {
             _instance = this;
-            for (int i = 0; i < 10; i++)
-            {
-                Add(new Habit()
-                {
-                    Name = "Habit " + i,
-                    ImageLocation = "/Resources/Icons/trophy_32.png",
-                    Description = "Habit " + i + " description",
-                    Days = new Random().Next(35) + 10,
-                    CurrentDay = new Random().Next(45)
-                });
-            }
         }
     }
 }
