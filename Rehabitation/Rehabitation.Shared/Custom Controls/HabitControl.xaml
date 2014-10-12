@@ -11,6 +11,7 @@
     <Grid x:Name="PanelMain" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
         <Grid.Resources>
             <conv:BoolToVisibility x:Key="BoolToVisibilityConv"/>
+            <conv:BoolToVisibilityRev x:Key="BoolToVisibilityRevConv"/>
         </Grid.Resources>
         <Grid.RenderTransform>
             <CompositeTransform x:Name="panelTranslator" TranslateY="0"/>
@@ -88,7 +89,7 @@
             <Grid Margin="10,0,0,0">
                 <TextBlock x:Name="txtHabitDescription" Text="{Binding Description, FallbackValue='Description of habit here'}" />
             </Grid>
-            <Grid x:Name="PanelButtons" Margin="10,0,10,0">
+            <Grid x:Name="PanelButtons" Margin="10,0,10,0" Visibility="{Binding IsDoneForToday, Converter={StaticResource BoolToVisibilityRevConv}, FallbackValue=Visible}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6*"/>
                     <ColumnDefinition Width="4*"/>

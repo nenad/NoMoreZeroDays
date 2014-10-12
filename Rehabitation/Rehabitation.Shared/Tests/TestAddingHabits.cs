@@ -44,6 +44,7 @@ namespace Rehabitation.Tests
             habit.Description = Description;
             habit.CurrentDay = CurrentDay;
             habit.Days = Days;
+            habit.LastDateDone = new DateTime(2014, 10, new Random().Next(1, 30));
             return habit;
         }
     }

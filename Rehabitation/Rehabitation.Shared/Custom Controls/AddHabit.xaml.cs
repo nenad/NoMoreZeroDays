@@ -81,7 +81,7 @@ namespace Rehabitation.Custom_Controls
                 Description = HabitDesc,
                 Days = Days,
                 CurrentDay = 0,
-                ImageLocation = "/Resources/Icons/trophy_32.png"
+                ImageLocation = "/Resources/Icons/trophy_32.png",
             };
             HabitItems.Instance.Add(newHabit);
             Hide();
