@@ -1,0 +1,56 @@
+﻿<UserControl
+    x:Class="NoMoreZeroDays.Custom_Controls.AddHabit"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NoMoreZeroDays.Custom_Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="AddPanel" VerticalAlignment="Top" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RenderTransformOrigin="0.5,0.5" >
+        <Grid.RenderTransform>
+            <CompositeTransform x:Name="AddPanelTranslator"/>
+        </Grid.RenderTransform>
+        <Grid.Resources>
+            <Storyboard x:Name="SlideFromTop">
+                <DoubleAnimation 
+                        From="-500" 
+                        To="0"
+                        Duration="0:0:0.3"
+                        Storyboard.TargetName="AddPanelTranslator"
+                        Storyboard.TargetProperty="TranslateY"
+                        FillBehavior="HoldEnd"
+                         >
+                    <DoubleAnimation.EasingFunction>
+                        <QuadraticEase EasingMode="EaseIn"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBox Margin="0,10" Grid.Row="0" Grid.Column="1" x:Name="txtHabitName" PlaceholderText="Habit name (ex. Do 10 pushups; Solve a math problem)" Height="32" HorizontalContentAlignment="Center"/>
+        <TextBox Margin="0,10" Grid.Row="1" Grid.Column="1" x:Name="txtHabitDesc" PlaceholderText="Habit description (ex. I need to improve my body; I want to be smarter" Height="32" HorizontalContentAlignment="Center"/>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0"  HorizontalAlignment="Center" x:Name="Checkboxes">
+                <RadioButton x:Name="defaultCheckbox" GroupName="Days" Content=" 21 Days" IsChecked="True" />
+                <RadioButton GroupName="Days" Content=" 30 Days" IsChecked="False"/>
+                <RadioButton GroupName="Days" Content=" 60 Days" IsChecked="False"/>
+            </StackPanel>
+            <Button Grid.Column="1" Content="Add habit" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="AddHabitClick" />
+        </Grid>
+    </Grid>
+</UserControl>

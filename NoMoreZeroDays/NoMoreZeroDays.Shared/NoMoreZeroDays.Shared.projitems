@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9bdd8eef-9d87-48ed-a539-16b8c8de92e0</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NoMoreZeroDays</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibilityRev.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom Controls\AddHabit.xaml.cs">
+      <DependentUpon>AddHabit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Custom Controls\HabitControl.xaml.cs">
+      <DependentUpon>HabitControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\BackHistoryStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IStackable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Habit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tests\TestAddingHabits.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HabitViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Custom Controls\AddHabit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Custom Controls\HabitControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Icons\Edit\Arrows.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Icons\Edit\ArrowsWhite.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Icons\Edit\Delete.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Icons\Edit\DeleteRed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Icons\trophy_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Views\" />
+  </ItemGroup>
+</Project>
