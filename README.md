@@ -1,4 +1,4 @@
-Rehabit
+NoMoreZeroDays
 =======
 
-Create productive habits, and stick with them for life!
+Create productive habits, and stick with them!
