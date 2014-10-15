@@ -14,7 +14,7 @@ namespace NoMoreZeroDays.Tests
         {
             int randomNumber = new Random().Next(5) + 3;
             for (int i = 0; i < randomNumber; i++)
-                HabitItems.Instance.Add(CreateRandomHabit());
+                HabitList.Instance.Add(CreateRandomHabit());
         }
 
         public Habit CreateRandomHabit(String Name = "", String Description = "", String ImageLocation = "", int Days = 0, int CurrentDay = 0)
@@ -41,12 +41,11 @@ namespace NoMoreZeroDays.Tests
             }
             Habit habit = new Habit();
             habit.Name = Name;
-            habit.ImageLocation = ImageLocation;
             habit.Description = Description;
             habit.CurrentDay = CurrentDay;
             habit.Days = Days;
             habit.LastDateDone = new DateTime(2014, 10, 11 + new Random().Next(5));
-            Debug.WriteLine(habit.LastDateDone);
+            Debug.WriteLine(habit);
             return habit;
         }
     }

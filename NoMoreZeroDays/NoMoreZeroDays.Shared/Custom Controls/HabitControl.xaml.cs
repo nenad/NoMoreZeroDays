@@ -25,6 +25,8 @@ namespace NoMoreZeroDays.Custom_Controls
 {
     public sealed partial class HabitControl : UserControl
     {
+        public static HabitControl ActiveControl = null;
+
         public CompositeTransform Translater;
         #region IsActive DependencyProperty
         public bool IsActive
@@ -48,9 +50,15 @@ namespace NoMoreZeroDays.Custom_Controls
         static void OnIsActiveChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             HabitControl habitControl = (HabitControl)obj;
+            Habit h = habitControl.DataContext as Habit;
+            
             var newvalue = (bool)args.NewValue;
+            Debug.WriteLine(h.Name + " " + newvalue);
             if (newvalue)
             {
+                habitControl.SlidePanelRightToLeft.AutoReverse = false;
+                habitControl.SlidePanelRightToLeft.Begin();
+                /*
                 habitControl.StorySlideFromLeft.AutoReverse = false;
                 habitControl.StorySlideFromRight.AutoReverse = false;
                 habitControl.FadeOpacity.AutoReverse = false;
@@ -58,9 +66,18 @@ namespace NoMoreZeroDays.Custom_Controls
                 habitControl.StorySlideFromLeft.Begin();
                 habitControl.StorySlideFromRight.Begin();
                 habitControl.FadeOpacity.Begin();
+                 * */
             }
             else
             {
+                var panel = habitControl.SlidePanelRightToLeft;
+                panel.AutoReverse = true;
+                //panel.Begin();
+                //panel.Pause();
+                panel.Seek(new TimeSpan(0, 0, 0, 0, 300));
+                panel.Resume();
+
+                /*
                 TimeSpan getTime;
 
                 habitControl.StorySlideFromLeft.SkipToFill();
@@ -84,6 +101,7 @@ namespace NoMoreZeroDays.Custom_Controls
                 habitControl.StorySlideFromLeft.Resume();
                 habitControl.StorySlideFromRight.Resume();
                 habitControl.FadeOpacity.Resume();
+                 */
             }
         }
 
@@ -94,11 +112,6 @@ namespace NoMoreZeroDays.Custom_Controls
             this.InitializeComponent();
             Translater = panelTranslator;
             HabitManager.HabitManager.AddHabit(this);
-        }
-
-        void RotateOnDone_Completed(object sender, object e)
-        {
-            
         }
 
         #region Dragging the element
@@ -162,7 +175,6 @@ namespace NoMoreZeroDays.Custom_Controls
 
         #region Add/Remove
 
-
         public void Remove()
         {
             HabitManager.HabitManager.RemoveHabit(this);
@@ -178,6 +190,24 @@ namespace NoMoreZeroDays.Custom_Controls
 
         private void DoneHabit(object sender, TappedRoutedEventArgs e)
         {
+            progressDaysLeft.Value += 1;
+        }
+
+        private void PanelMain_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            if (e.HoldingState != Windows.UI.Input.HoldingState.Started)
+                return;
+
+
+            if (ActiveControl != this && ActiveControl != null)
+            {
+                ActiveControl.IsActive = false;
+            }
+
+            ActiveControl = this;
+            IsActive = true;
+            e.Handled = true;
+
         }
     }
 

@@ -24,7 +24,7 @@ namespace NoMoreZeroDays.HabitManager
             Habit habit = habitControl.DataContext as Habit;
             Debug.WriteLine(habit.Name);
             HabitControls.Remove(habitControl);
-            HabitItems.Instance.Remove(habit);
+            HabitList.Instance.Remove(habit);
         }
 
         public void ListHeights()

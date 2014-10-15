@@ -11,8 +11,8 @@ namespace NoMoreZeroDays.ViewModels
     public class HabitViewModel : INotifyPropertyChanged
     {
 
-        private HabitItems _habits;
-        public HabitItems Habits
+        private HabitList _habits;
+        public HabitList Habits
         {
             get
             {
@@ -26,7 +26,7 @@ namespace NoMoreZeroDays.ViewModels
 
         public HabitViewModel()
         {
-            Habits = new HabitItems();
+            Habits = new HabitList();
         }
 
         protected void NotifyPropertyChanged(string propertyName)

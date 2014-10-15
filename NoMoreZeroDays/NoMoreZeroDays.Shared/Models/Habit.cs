@@ -36,12 +36,6 @@ namespace NoMoreZeroDays.Models
             set;
         }
 
-        public String ImageLocation
-        {
-            get;
-            set;
-        }
-
         public DateTime LastDateDone
         {
             get;
@@ -66,6 +60,12 @@ namespace NoMoreZeroDays.Models
                 var month = DateTime.Now.Month;
                 return LastDateDone.Day == day && LastDateDone.Month == month;
             }
+        }
+
+        public override string ToString()
+        {
+            string formatted = String.Format("{0}, {1} [{2}/{3}]", Name, Description, CurrentDay, Days);
+            return formatted;
         }
 
     }

@@ -4,4 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:NoMoreZeroDays">
 
+    <Application.Resources>
+        <SolidColorBrush Color="#3b5767" x:Key="NMZDBrush" />
+        <SolidColorBrush Color="#3fb39c" x:Key="NMZDBack" />
+        <SolidColorBrush Color="#f0c94a" x:Key="NMZDHighlight" />
+        <SolidColorBrush Color="#e37d3d" x:Key="NMZDOrange"/>
+    </Application.Resources>
+    
 </Application>

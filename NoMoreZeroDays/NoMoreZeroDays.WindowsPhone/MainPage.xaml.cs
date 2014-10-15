@@ -36,11 +36,16 @@ namespace NoMoreZeroDays
 
         void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
-
-            if (BackHistoryStack.History.Count != 0)
+            if (HabitControl.ActiveControl != null)
+            {
+                HabitControl.ActiveControl.IsActive = false;
+                HabitControl.ActiveControl = null;
+                e.Handled = true;
+                return;
+            }
+            else if (BackHistoryStack.History.Count != 0)
             {
                 var item = BackHistoryStack.History.Peek();
-                Debug.WriteLine("Popped " + item.ToString());
                 item.Hide();
                 e.Handled = true;
                 return;
@@ -75,12 +80,19 @@ namespace NoMoreZeroDays
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
+            var oneHabit = HabitManager.HabitList.Instance[0];
+            var twoHabit = HabitManager.HabitList.Instance[1];
+            HabitManager.HabitList.Instance[0] = twoHabit;
+            HabitManager.HabitList.Instance[1] = oneHabit;
+
+            /*
             foreach (var item in HabitList.Items)
             {
                 var container = HabitList.ContainerFromItem(item) as FrameworkElement;
                 var habitControl = VisualTreeHelper.GetChild(container, 0) as HabitControl;
                 habitControl.IsActive = !habitControl.IsActive;
             }
+             * */
         }
 
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)

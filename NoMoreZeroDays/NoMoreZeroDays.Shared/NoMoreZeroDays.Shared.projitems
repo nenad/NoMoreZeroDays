@@ -17,16 +17,20 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibilityRev.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\UppercaseConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom Controls\AddHabit.xaml.cs">
       <DependentUpon>AddHabit.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Custom Controls\HabitControl.xaml.cs">
       <DependentUpon>HabitControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\BackHistoryStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ProgressBarSmoother.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\IStackable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StatusBarManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Habit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tests\TestAddingHabits.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HabitViewModel.cs" />
@@ -49,6 +53,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Resources\Icons\trophy_32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Transitions\" />
     <Folder Include="$(MSBuildThisFileDirectory)Views\" />
   </ItemGroup>
 </Project>

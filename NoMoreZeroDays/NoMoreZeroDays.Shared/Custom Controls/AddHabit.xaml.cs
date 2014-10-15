@@ -85,11 +85,15 @@ namespace NoMoreZeroDays.Custom_Controls
                 Name = HabitName,
                 Description = HabitDesc,
                 Days = Days,
-                CurrentDay = 0,
-                ImageLocation = "/Resources/Icons/trophy_32.png",
+                CurrentDay = 0
             };
-            HabitItems.Instance.Add(newHabit);
+            HabitList.Instance.Add(newHabit);
             Hide();
+        }
+
+        protected override void OnKeyUp(KeyRoutedEventArgs e)
+        {
+            Debug.WriteLine(e.Key);
         }
     }
 }

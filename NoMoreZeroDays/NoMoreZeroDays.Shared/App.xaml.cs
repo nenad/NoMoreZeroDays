@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -114,7 +115,13 @@ namespace NoMoreZeroDays
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
             var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
+
+            Array values = Enum.GetValues(typeof(EdgeTransitionLocation));
+            Random random = new Random();
+            EdgeTransitionLocation randomEdge = (EdgeTransitionLocation)values.GetValue(random.Next(values.Length));
+
+            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new EdgeUIThemeTransition() { Edge = randomEdge } };
+            HabitManager.HabitSerializer.Load();
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
         }
 #endif
@@ -129,8 +136,8 @@ namespace NoMoreZeroDays
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-
             // TODO: Save application state and stop any background activity
+            HabitManager.HabitSerializer.Save();
             deferral.Complete();
         }
     }
