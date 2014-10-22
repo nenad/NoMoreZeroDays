@@ -3,7 +3,7 @@
   <Identity Name="89359b1b-7e1b-4f2e-9441-d5e96caac679" Publisher="CN=Finn" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="89359b1b-7e1b-4f2e-9441-d5e96caac679" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>NoMoreZeroDays.WindowsPhone</DisplayName>
+    <DisplayName>NoMoreZeroDays</DisplayName>
     <PublisherDisplayName>Finn</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -16,14 +16,14 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="NoMoreZeroDays.WindowsPhone.App">
-      <m3:VisualElements DisplayName="NoMoreZeroDays.WindowsPhone" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="NoMoreZeroDays.WindowsPhone" ForegroundText="light" BackgroundColor="#3c5768" ToastCapable="true">
+      <m3:VisualElements DisplayName="NoMoreZeroDays" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="NoMoreZeroDays" ForegroundText="light" BackgroundColor="#3c5768" ToastCapable="true">
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>
         <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#3c5768" />
+        <m3:InitialRotationPreference>
+          <m3:Rotation Preference="portrait" />
+        </m3:InitialRotationPreference>
       </m3:VisualElements>
     </Application>
   </Applications>
-  <Capabilities>
-    <Capability Name="internetClientServer" />
-  </Capabilities>
 </Package>

@@ -49,11 +49,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0"  HorizontalAlignment="Center" x:Name="Checkboxes">
-                <RadioButton x:Name="defaultCheckbox" GroupName="Days" Content=" 21 Days" IsChecked="True" />
-                <RadioButton GroupName="Days" Content=" 30 Days" IsChecked="False"/>
-                <RadioButton GroupName="Days" Content=" 60 Days" IsChecked="False"/>
+                <RadioButton x:Name="defaultCheckbox" GroupName="Days" Content=" 21 days" IsChecked="True" />
+                <RadioButton GroupName="Days" Content=" 30 days" IsChecked="False"/>
+                <RadioButton GroupName="Days" Content=" 60 days" IsChecked="False"/>
             </StackPanel>
-            <Button Grid.Column="1" Content="Add habit" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="AddHabitClick" />
+            <Button Style="{StaticResource FlatButton}" Grid.Column="1" Content="ADD HABIT" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="AddHabitClick" />
         </Grid>
     </Grid>
 </UserControl>

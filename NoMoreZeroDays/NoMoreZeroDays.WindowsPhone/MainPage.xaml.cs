@@ -30,7 +30,7 @@ namespace NoMoreZeroDays
         public MainPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = NavigationCacheMode.Required;
+            this.NavigationCacheMode = NavigationCacheMode.Disabled;
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 
@@ -69,7 +69,7 @@ namespace NoMoreZeroDays
         {
             // TODO: Prepare page for display here.
             this.DataContext = new HabitViewModel();
-            new Tests.TestAddingHabits();
+            //new Tests.TestAddingHabits();
             
             // TODO: If your application contains multiple pages, ensure that you are
             // handling the hardware Back button by registering for the

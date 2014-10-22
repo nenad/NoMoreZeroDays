@@ -86,19 +86,20 @@
                         <RowDefinition Height="5*"/>
                         <RowDefinition Height="5*"/>
                     </Grid.RowDefinitions>
+
                     <Border Grid.Row="0" Background="{StaticResource NMZDOrange}" BorderBrush="White">
-                        <TextBlock Text="MOVE UP" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="MOVE UP" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
                     </Border>
 
                     <Border Grid.Row="1" Background="{StaticResource NMZDOrange}">
-                        <TextBlock Text="MOVE DOWN" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="MOVE DOWN" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
                     </Border>
                     <!--<Image Grid.RowSpan="2" Source="/Resources/Icons/Edit/ArrowsWhite.png" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>-->
                 </Grid>
             </Border>
 
             <Border Background="{StaticResource NMZDOrange}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="3">
-                <TextBlock Text="EDIT" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock Text="EDIT" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
             </Border>
             <Border BorderBrush="White" Grid.Column="4" Tapped="DeleteHabit" Background="{StaticResource NMZDOrange}">
                 <!--<Image Source="/Resources/Icons/Edit/DeleteRed.png" Height="64" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -106,7 +107,7 @@
                         <CompositeTransform x:Name="TrashImageTransform" />
                     </Image.RenderTransform>
                 </Image>-->
-                <TextBlock Text="DELETE" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Text="DELETE" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
             </Border>
         </Grid>
 

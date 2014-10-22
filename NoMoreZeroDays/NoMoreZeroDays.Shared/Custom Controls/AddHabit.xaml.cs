@@ -68,7 +68,8 @@ namespace NoMoreZeroDays.Custom_Controls
                 RadioButton chk = checkbox as RadioButton;
                 if (chk.IsChecked == true)
                 {
-                    int value = int.Parse(((string)(chk.Content)).Substring(0, 2));
+                    int value = int.Parse(((string)(chk.Content)).Substring(0, 3).Trim());
+                    Debug.WriteLine(value + " days");
                     Days = value;
                     break;
                 }
@@ -88,12 +89,9 @@ namespace NoMoreZeroDays.Custom_Controls
                 CurrentDay = 0
             };
             HabitList.Instance.Add(newHabit);
+            Debug.WriteLine("added: " + newHabit);
+            //HabitSerializer.Save();
             Hide();
-        }
-
-        protected override void OnKeyUp(KeyRoutedEventArgs e)
-        {
-            Debug.WriteLine(e.Key);
         }
     }
 }

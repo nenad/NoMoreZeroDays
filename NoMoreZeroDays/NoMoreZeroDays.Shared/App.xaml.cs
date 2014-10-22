@@ -1,13 +1,16 @@
-﻿using System;
+﻿using NoMoreZeroDays.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Serialization;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -38,6 +41,12 @@ namespace NoMoreZeroDays
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            this.Resuming += App_Resuming;
+        }
+
+        void App_Resuming(object sender, object e)
+        {
+
         }
 
         /// <summary>
@@ -54,6 +63,16 @@ namespace NoMoreZeroDays
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+
+            try
+            {
+                var data = ApplicationData.Current.LocalSettings.Values["kappa"];
+                Debug.WriteLine(data);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -112,7 +131,7 @@ namespace NoMoreZeroDays
         /// </summary>
         /// <param name="sender">The object where the handler is attached.</param>
         /// <param name="e">Details about the navigation event.</param>
-        private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
+        private async void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
             var rootFrame = sender as Frame;
 
@@ -121,7 +140,8 @@ namespace NoMoreZeroDays
             EdgeTransitionLocation randomEdge = (EdgeTransitionLocation)values.GetValue(random.Next(values.Length));
 
             rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new EdgeUIThemeTransition() { Edge = randomEdge } };
-            HabitManager.HabitSerializer.Load();
+            Debug.WriteLine("FIRST RUN");
+            await HabitManager.HabitSerializer.Load();
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
         }
 #endif
@@ -133,11 +153,11 @@ namespace NoMoreZeroDays
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             // TODO: Save application state and stop any background activity
-            HabitManager.HabitSerializer.Save();
+            await HabitManager.HabitSerializer.Save();
             deferral.Complete();
         }
     }
