@@ -35,7 +35,7 @@ namespace NoMoreZeroDays.Models
             get;
             set;
         }
-
+        /*
         public DateTime LastDateDone
         {
             get;
@@ -61,6 +61,7 @@ namespace NoMoreZeroDays.Models
                 return LastDateDone.Day == day && LastDateDone.Month == month;
             }
         }
+         * */
 
         public override string ToString()
         {

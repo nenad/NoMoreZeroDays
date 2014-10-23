@@ -27,6 +27,13 @@ namespace NoMoreZeroDays.Custom_Controls
     {
         public static HabitControl ActiveControl = null;
 
+        private Habit Habit
+        {
+            get
+            {
+                return this.DataContext as Habit;
+            }
+        }
         public CompositeTransform Translater;
         #region IsActive DependencyProperty
         public bool IsActive
@@ -190,6 +197,7 @@ namespace NoMoreZeroDays.Custom_Controls
 
         private void DoneHabit(object sender, TappedRoutedEventArgs e)
         {
+            Habit.CurrentDay++;
             progressDaysLeft.Value += 1;
         }
 

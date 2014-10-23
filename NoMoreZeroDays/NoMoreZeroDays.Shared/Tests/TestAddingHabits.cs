@@ -27,10 +27,6 @@ namespace NoMoreZeroDays.Tests
             {
                 Description = "Habit description" + rnd.Next(100);
             }
-            if (ImageLocation == String.Empty)
-            {
-                ImageLocation = "/Resources/Icons/trophy_32.png";
-            }
             if (Days == 0)
             {
                 Days = rnd.Next(15) + 15;
@@ -44,7 +40,7 @@ namespace NoMoreZeroDays.Tests
             habit.Description = Description;
             habit.CurrentDay = CurrentDay;
             habit.Days = Days;
-            habit.LastDateDone = new DateTime(2014, 10, 11 + new Random().Next(5));
+            //habit.LastDateDone = new DateTime(2014, 10, 11 + new Random().Next(5));
             Debug.WriteLine(habit);
             return habit;
         }
