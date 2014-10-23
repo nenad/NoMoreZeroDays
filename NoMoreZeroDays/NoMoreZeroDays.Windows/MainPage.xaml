@@ -6,13 +6,43 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:habit="using:NoMoreZeroDays.Custom_Controls"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{StaticResource NMZDBrush}">
 
-    <ItemsControl x:Name="HabitList" ItemsSource="{Binding Habits}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <habit:HabitControl />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    <!--
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Add" Label="add" Click="AppBarButton_Click_1"/>
+            <AppBarButton Icon="AllApps" Label="edit" Click="AppBarButton_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+    -->
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <habit:AddHabit Grid.Row="0" x:Name="AddHabitPanel" RenderTransformOrigin="0.5,0.5" Canvas.ZIndex="100" />
+
+        <ScrollViewer Grid.Row="0">
+            <StackPanel>
+                <ItemsControl x:Name="HabitList" ItemsSource="{Binding Habits}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ItemsControl.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition/>
+                            <RepositionThemeTransition/>
+                        </TransitionCollection>
+                    </ItemsControl.ItemContainerTransitions>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <habit:HabitControl x:Name="HabitControl"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+        <Button VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Style="{StaticResource FlatButton}" Content="+" Click="AppBarButton_Click_1"/>
+    </Grid>
+
 </Page>

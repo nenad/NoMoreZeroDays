@@ -20,8 +20,8 @@
     	<SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="Transparent"/>
     	<Style x:Key="FlatButton" TargetType="Button">
     		<Setter Property="Background" Value="Transparent"/>
-    		<Setter Property="BorderBrush" Value="{ThemeResource PhoneForegroundBrush}"/>
-    		<Setter Property="Foreground" Value="{ThemeResource PhoneForegroundBrush}"/>
+    		<Setter Property="BorderBrush" Value="{ThemeResource ApplicationForegroundThemeBrush}"/>
+    		<Setter Property="Foreground" Value="{ThemeResource ApplicationForegroundThemeBrush}"/>
     		<Setter Property="BorderThickness" Value="{ThemeResource PhoneBorderThickness}"/>
     		<Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
     		<Setter Property="FontWeight" Value="{ThemeResource PhoneButtonFontWeight}"/>

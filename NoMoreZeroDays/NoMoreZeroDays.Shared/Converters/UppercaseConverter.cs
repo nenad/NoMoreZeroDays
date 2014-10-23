@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Data;
 
 namespace NoMoreZeroDays.Converters
 {
-    class UppercaseConverter : IValueConverter
+    public class UppercaseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
