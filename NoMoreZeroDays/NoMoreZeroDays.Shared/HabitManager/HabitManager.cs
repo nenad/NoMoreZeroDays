@@ -33,19 +33,35 @@ namespace NoMoreZeroDays.HabitManager
 
         public static void MoveHabit(HabitControl habitControl, int distance)
         {
-            int oldPosition = HabitControls.IndexOf(habitControl);
-            int newPosition = Clamp(oldPosition + distance, 0, HabitControls.Count - 1);
-            
-            var oldH = HabitList.Instance[oldPosition];
-            HabitList.Instance[oldPosition] = HabitList.Instance[newPosition];
-            HabitList.Instance[newPosition] = oldH;
+            var habit = habitControl.DataContext as Habit;
+            int oldPosition = HabitList.Instance.IndexOf(habit);
+            int newPosition = Clamp(oldPosition + distance, 0, HabitList.Instance.Count - 1);
 
+            if (oldPosition == newPosition) return;
+
+            HabitList.Instance[oldPosition].ListPosition = newPosition;
+            HabitList.Instance[newPosition].ListPosition = oldPosition;
+            HabitList.Instance.Move(oldPosition, newPosition);
+            
+            UpdateHabits(new Habit[] { HabitList.Instance[oldPosition], HabitList.Instance[newPosition] });
             Debug.WriteLine(String.Format("Index: {0}/{1}", oldPosition, HabitControls.Count - 1));
         }
 
         public static int Clamp(int value, int min, int max)
         {
             return (value < min) ? min : (value > max) ? max : value;
+        }
+
+        static async void UpdateHabits(Habit[] habits)
+        {
+            var app = App.Current as NoMoreZeroDays.App;
+            var db = new SQLite.SQLiteAsyncConnection(app.DBPath);
+
+            foreach (var habit in habits)
+            {
+                await db.UpdateAsync(habit);
+            }
+            
         }
 
 

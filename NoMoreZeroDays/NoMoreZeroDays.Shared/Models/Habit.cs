@@ -7,13 +7,15 @@ namespace NoMoreZeroDays.Models
 {
     public class Habit
     {
-        public Habit()
-        {
-            
-        }
 
         [SQLite.PrimaryKey, SQLite.AutoIncrement]
-        public int Index
+        public int Id
+        {
+            get;
+            set;
+        }
+
+        public int ListPosition
         {
             get;
             set;

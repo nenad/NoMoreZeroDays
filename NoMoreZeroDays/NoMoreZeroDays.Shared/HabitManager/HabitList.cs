@@ -37,6 +37,7 @@ namespace NoMoreZeroDays.HabitManager
         /// <param name="habit">The habit to add</param>
         public async void AddHabit(Habit habit)
         {
+            habit.ListPosition = this.Count;
             this.Add(habit);
 
             var db = new SQLite.SQLiteAsyncConnection(app.DBPath);
@@ -64,12 +65,6 @@ namespace NoMoreZeroDays.HabitManager
             Habit[] habits = new Habit[this.Items.Count];
             this.Items.CopyTo(habits, 0);
             return habits;
-        }
-
-        public async void UpdateHabits()
-        {
-            var db = new SQLite.SQLiteAsyncConnection(app.DBPath);
-            await db.UpdateAllAsync(GetHabits());
         }
     }
 }
