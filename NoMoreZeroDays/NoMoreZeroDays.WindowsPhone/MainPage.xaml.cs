@@ -27,23 +27,18 @@ namespace NoMoreZeroDays
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        StatusBarManager statusBarManager;
         public MainPage()
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Disabled;
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+            statusBarManager = new StatusBarManager();
         }
 
         void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
-            if (HabitControl.ActiveControl != null)
-            {
-                HabitControl.ActiveControl.IsActive = false;
-                HabitControl.ActiveControl = null;
-                e.Handled = true;
-                return;
-            }
-            else if (BackHistoryStack.History.Count != 0)
+            if (BackHistoryStack.History.Count != 0)
             {
                 var item = BackHistoryStack.History.Peek();
                 item.Hide();
@@ -76,23 +71,6 @@ namespace NoMoreZeroDays
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
-        }
-
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            var oneHabit = HabitManager.HabitList.Instance[0];
-            var twoHabit = HabitManager.HabitList.Instance[1];
-            HabitManager.HabitList.Instance[0] = twoHabit;
-            HabitManager.HabitList.Instance[1] = oneHabit;
-
-            /*
-            foreach (var item in HabitList.Items)
-            {
-                var container = HabitList.ContainerFromItem(item) as FrameworkElement;
-                var habitControl = VisualTreeHelper.GetChild(container, 0) as HabitControl;
-                habitControl.IsActive = !habitControl.IsActive;
-            }
-             * */
         }
 
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)

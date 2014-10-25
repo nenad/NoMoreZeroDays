@@ -19,98 +19,6 @@
             <CompositeTransform x:Name="panelTranslator" TranslateY="0"/>
         </Grid.RenderTransform>
 
-        <!-- Edit Panel -->
-        <Grid x:Name="PanelEdit" Canvas.ZIndex="10" RenderTransformOrigin="0.5,0.5">
-            <Grid.Resources>
-                <Storyboard x:Name="SlidePanelRightToLeft">
-                    <DoubleAnimation Storyboard.TargetName="PanelEdit"
-                                     Storyboard.TargetProperty="(Grid.RenderTransform).(CompositeTransform.TranslateX)"
-                                     From="220"
-                                     To="0"
-                                     Duration="0:0:0.3"
-                                     FillBehavior="HoldEnd"
-                                     >
-                        <DoubleAnimation.EasingFunction>
-                            <QuadraticEase EasingMode="EaseIn" />
-                        </DoubleAnimation.EasingFunction>
-                    </DoubleAnimation>
-                </Storyboard>
-                <Storyboard x:Key="SlideFromLeft" x:Name="StorySlideFromLeft">
-                    <DoubleAnimation Storyboard.TargetName="ArrowImageTransform" 
-                                     Storyboard.TargetProperty="TranslateX" 
-                                     From="-200" 
-                                     To="0" 
-                                     Duration="0:0:0.5" 
-                                     FillBehavior="HoldEnd">
-                        <DoubleAnimation.EasingFunction>
-                            <SineEase EasingMode="EaseIn" />
-                        </DoubleAnimation.EasingFunction>
-                    </DoubleAnimation>
-                </Storyboard>
-                <Storyboard x:Key="SlideFromRight" x:Name="StorySlideFromRight">
-                    <DoubleAnimation Storyboard.TargetName="TrashImageTransform" 
-                                     Storyboard.TargetProperty="TranslateX" 
-                                     From="120" 
-                                     To="0" 
-                                     Duration="0:0:0.5" 
-                                     FillBehavior="HoldEnd">
-                        <DoubleAnimation.EasingFunction>
-                            <SineEase EasingMode="EaseIn" />
-                        </DoubleAnimation.EasingFunction>
-                    </DoubleAnimation>
-                </Storyboard>
-                <Storyboard x:Name="FadeOpacity">
-                    <DoubleAnimation Storyboard.TargetName="PanelDetails"
-                                     Storyboard.TargetProperty="Opacity"
-                                     From="1"
-                                     To="0.3"
-                                     Duration="0:0:0.5"
-                                     FillBehavior="HoldEnd">
-                    </DoubleAnimation>
-                </Storyboard>
-            </Grid.Resources>
-            <Grid.RenderTransform>
-                <CompositeTransform TranslateX="220"/>
-            </Grid.RenderTransform>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="38*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="15*"/>
-            </Grid.ColumnDefinitions>
-
-            <Border Background="White" BorderBrush="White" Grid.Column="2" ManipulationStarted="DragStart" ManipulationMode="TranslateY" ManipulationDelta="DragDelta" ManipulationCompleted="DragEnd" Tapped="StopPropagationTap">
-                <Grid VerticalAlignment="Stretch">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition Height="5*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Grid.Row="0" Background="{StaticResource NMZDOrange}" BorderBrush="White">
-                        <TextBlock Text="MOVE UP" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
-                    </Border>
-
-                    <Border Grid.Row="1" Background="{StaticResource NMZDOrange}">
-                        <TextBlock Text="MOVE DOWN" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
-                    </Border>
-                    <!--<Image Grid.RowSpan="2" Source="/Resources/Icons/Edit/ArrowsWhite.png" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>-->
-                </Grid>
-            </Border>
-
-            <Border Background="{StaticResource NMZDOrange}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="3">
-                <TextBlock Text="EDIT" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-            </Border>
-            <Border BorderBrush="White" Grid.Column="4" Tapped="DeleteHabit" Background="{StaticResource NMZDOrange}">
-                <!--<Image Source="/Resources/Icons/Edit/DeleteRed.png" Height="64" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Image.RenderTransform>
-                        <CompositeTransform x:Name="TrashImageTransform" />
-                    </Image.RenderTransform>
-                </Image>-->
-                <TextBlock Text="DELETE" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
-            </Border>
-        </Grid>
-
         <!-- Details Panel -->
         <StackPanel x:Name="PanelDetails" Width="Auto" Grid.ColumnSpan="2">
 
@@ -129,8 +37,11 @@
                 <TextBlock Grid.Column="0" Grid.Row="0" x:FieldModifier="Public" x:Name="txtHabitName" FontSize="24" Text="{Binding Name, FallbackValue='HABIT NAME HERE', Converter={StaticResource UppercaseConv}}" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="Segoe UI Black"  Foreground="White" SelectionHighlightColor="{x:Null}" FontWeight="Bold"/>
                 <TextBlock Grid.Column="0" Grid.Row="1" x:Name="txtHabitDescription" VerticalAlignment="Center" Text="{Binding Description, FallbackValue='Description of habit here'}" Margin="10,0,0,0" FontFamily="Segoe UI" Foreground="White"/>
 
-                <Border Height="70" x:Name="PanelDone" Grid.Column="1" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Tapped="DoneHabit" Background="{StaticResource NMZDHighlight}" RenderTransformOrigin="0.5,0.5">
-                    <TextBlock Canvas.ZIndex="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="✓" Foreground="White" FontFamily="MS Mincho"/>
+                <Border Height="70" x:Name="PanelDone" Grid.Column="1" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Tapped="ToggleHabit" Background="{StaticResource NMZDHighlight}" RenderTransformOrigin="0.5,0.5">
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <TextBlock x:Name="CheckOK" Canvas.ZIndex="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="✓" Foreground="White" FontFamily="MS Mincho" Visibility="{Binding Path=IsDoneForToday, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=Visible}"/>
+                        <TextBlock x:Name="CheckCancel" Canvas.ZIndex="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="✗" Foreground="White" FontFamily="MS Mincho" Visibility="{Binding Path=IsDoneForToday, Converter={StaticResource BoolToVisibilityRevConv}, FallbackValue=Collapsed}"/>
+                    </Grid>
                 </Border>
                 <!--<Button Content="No" Grid.Column="1" HorizontalAlignment="Stretch" Click="MissedHabit" />-->
                 <!--<Image x:Name="imgHabitIcon" Source="{Binding ImageLocation, FallbackValue='/Resources/Icons/trophy_32.png'}" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"/>-->

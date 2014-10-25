@@ -88,9 +88,7 @@ namespace NoMoreZeroDays.Custom_Controls
                 Days = Days,
                 CurrentDay = 0
             };
-            HabitList.Instance.Add(newHabit);
-            Debug.WriteLine("added: " + newHabit);
-            //HabitSerializer.Save();
+            HabitList.Instance.AddHabit(newHabit);
             Hide();
         }
     }

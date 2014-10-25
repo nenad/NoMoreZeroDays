@@ -6,10 +6,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,6 +26,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace NoMoreZeroDays.Custom_Controls
 {
+
+    enum Direction
+    {
+        Up,
+        Down
+    }
+
     public sealed partial class HabitControl : UserControl
     {
         public static HabitControl ActiveControl = null;
@@ -34,150 +44,11 @@ namespace NoMoreZeroDays.Custom_Controls
                 return this.DataContext as Habit;
             }
         }
-        public CompositeTransform Translater;
-        #region IsActive DependencyProperty
-        public bool IsActive
-        {
-            get
-            {
-                return (Boolean)GetValue(IsActiveDP);
-            }
-            set
-            {
-                SetValue(IsActiveDP, value);
-            }
-        }
-
-        public static DependencyProperty IsActiveDP = DependencyProperty.RegisterAttached(
-            "IsActive",
-            typeof(Boolean),
-            typeof(HabitControl),
-            new PropertyMetadata(false, OnIsActiveChanged)
-        );
-        static void OnIsActiveChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
-            HabitControl habitControl = (HabitControl)obj;
-            Habit h = habitControl.DataContext as Habit;
-            
-            var newvalue = (bool)args.NewValue;
-            Debug.WriteLine(h.Name + " " + newvalue);
-            if (newvalue)
-            {
-                habitControl.SlidePanelRightToLeft.AutoReverse = false;
-                habitControl.SlidePanelRightToLeft.Begin();
-                /*
-                habitControl.StorySlideFromLeft.AutoReverse = false;
-                habitControl.StorySlideFromRight.AutoReverse = false;
-                habitControl.FadeOpacity.AutoReverse = false;
-
-                habitControl.StorySlideFromLeft.Begin();
-                habitControl.StorySlideFromRight.Begin();
-                habitControl.FadeOpacity.Begin();
-                 * */
-            }
-            else
-            {
-                var panel = habitControl.SlidePanelRightToLeft;
-                panel.AutoReverse = true;
-                //panel.Begin();
-                //panel.Pause();
-                panel.Seek(new TimeSpan(0, 0, 0, 0, 300));
-                panel.Resume();
-
-                /*
-                TimeSpan getTime;
-
-                habitControl.StorySlideFromLeft.SkipToFill();
-                getTime = habitControl.StorySlideFromLeft.GetCurrentTime();
-                habitControl.StorySlideFromLeft.Seek(getTime);
-
-                habitControl.StorySlideFromRight.SkipToFill();
-                getTime = habitControl.StorySlideFromRight.GetCurrentTime();
-                habitControl.StorySlideFromRight.Seek(getTime);
-
-                habitControl.FadeOpacity.SkipToFill();
-                getTime = habitControl.FadeOpacity.GetCurrentTime();
-                habitControl.FadeOpacity.Seek(getTime);
-                //habitControl.StorySlideFromLeft.Seek(new TimeSpan(0, 0, 1));
-
-
-                habitControl.StorySlideFromLeft.AutoReverse = true;
-                habitControl.StorySlideFromRight.AutoReverse = true;
-                habitControl.FadeOpacity.AutoReverse = true;
-
-                habitControl.StorySlideFromLeft.Resume();
-                habitControl.StorySlideFromRight.Resume();
-                habitControl.FadeOpacity.Resume();
-                 */
-            }
-        }
-
-        #endregion
 
         public HabitControl()
         {
             this.InitializeComponent();
-            Translater = panelTranslator;
             HabitManager.HabitManager.AddHabit(this);
-        }
-
-        #region Dragging the element
-        double start = 0;
-        double end = 0;
-        double totalAbs;
-        double height;
-        double total;
-        CoreDispatcher dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
-        
-        private void DragStart(object sender, ManipulationStartedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            start = panelTranslator.TranslateY;
-            height = this.ActualHeight;
-        }
-
-        private async void DragDelta(object sender, ManipulationDeltaRoutedEventArgs e)
-        {
-            e.Handled = true;
-            Point deltaPoint = e.Delta.Translation;
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-               // panelTranslator.TranslateY += deltaPoint.Y;
-            });
-            
-            end = e.Cumulative.Translation.Y;
-            totalAbs = Math.Abs(end - start);
-            total = (end - start);
-
-            if (totalAbs >= height / 2)
-            {
-               // HabitManager.HabitManager.MoveHabit(this, total);
-            }
-        }
-
-        private void DragEnd(object sender, ManipulationCompletedRoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (totalAbs <= this.ActualHeight)
-            {
-                var time = new Duration(new TimeSpan(0, 0, 0, 0, 400));
-                Storyboard slideBack = new Storyboard();
-                DoubleAnimation doubleAnim = new DoubleAnimation();
-                doubleAnim.From = total;
-                doubleAnim.To = 0;
-                doubleAnim.Duration = time;
-                slideBack.Children.Add(doubleAnim);
-                Storyboard.SetTarget(doubleAnim, this.panelTranslator);
-                Storyboard.SetTargetProperty(doubleAnim, "TranslateY");
-                slideBack.Begin();
-            }
-            
-        }
-        #endregion
-
-        private void StopPropagationTap(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
         }
 
         #region Add/Remove
@@ -189,33 +60,109 @@ namespace NoMoreZeroDays.Custom_Controls
 
         #endregion
 
-        private void DeleteHabit(object sender, TappedRoutedEventArgs e)
-        {
-            Remove();
-        }
 
-
-        private void DoneHabit(object sender, TappedRoutedEventArgs e)
-        {
-            Habit.CurrentDay++;
-            progressDaysLeft.Value += 1;
-        }
 
         private void PanelMain_Holding(object sender, HoldingRoutedEventArgs e)
         {
             if (e.HoldingState != Windows.UI.Input.HoldingState.Started)
                 return;
 
-
-            if (ActiveControl != this && ActiveControl != null)
+            MenuFlyout menu = new MenuFlyout();
+            Style menuStyle = new Windows.UI.Xaml.Style()
             {
-                ActiveControl.IsActive = false;
+                TargetType = typeof(MenuFlyoutPresenter)
+            };
+            //menuStyle.Setters.Add(new Setter(BackgroundProperty, new SolidColorBrush(Colors.Blue)));
+            menu.MenuFlyoutPresenterStyle = menuStyle;
+
+            #region Menu Items 
+            var moveUpItem = new MenuFlyoutItem();
+            moveUpItem.Text = "Move Up";
+            moveUpItem.Click += moveUpItem_Click;
+
+            var moveDownItem = new MenuFlyoutItem();
+            moveDownItem.Text = "Move Down";
+            moveDownItem.Click += moveDownItem_Click;
+
+            var deleteItem = new MenuFlyoutItem();
+            deleteItem.Text = "Delete";
+            deleteItem.Click += deleteItem_Click;
+
+            var editItem = new MenuFlyoutItem();
+            editItem.Text = "Edit";
+            editItem.Click += editItem_Click;
+
+            var moreInfo = new MenuFlyoutItem();
+            moreInfo.Text = "More info";
+            moreInfo.Click += moreInfo_Click;
+            menu.Items.Add(moveUpItem);
+            menu.Items.Add(moveDownItem);
+            menu.Items.Add(moreInfo);
+
+            menu.Items.Add(new MenuFlyoutSeparator());
+
+            menu.Items.Add(editItem);
+            menu.Items.Add(deleteItem);
+            #endregion
+
+            menu.ShowAt(sender as FrameworkElement);
+            e.Handled = true;
+        }
+
+        private void ToggleHabit(object sender, TappedRoutedEventArgs e)
+        {
+            Habit.IsDoneForToday = !Habit.IsDoneForToday;
+
+            if (Habit.IsDoneForToday)
+            {
+                Habit.CurrentDay++;
+                progressDaysLeft.Value += 1;
+            }
+            else
+            {
+                Habit.CurrentDay--;
+                progressDaysLeft.Value -= 1;
             }
 
-            ActiveControl = this;
-            IsActive = true;
-            e.Handled = true;
+        }
+        
+        void moreInfo_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
 
+        async void editItem_Click(object sender, RoutedEventArgs e)
+        {
+            var habit = (sender as HabitControl).DataContext as Habit;
+            await new MessageDialog("Edit " + habit).ShowAsync();
+        }
+
+        void deleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            Remove();
+        }
+
+        void moveDownItem_Click(object sender, RoutedEventArgs e)
+        {
+            MovePosition(Direction.Down);
+        }
+
+        void moveUpItem_Click(object sender, RoutedEventArgs e)
+        {
+            MovePosition(Direction.Up);
+        }
+
+        void MovePosition(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    HabitManager.HabitManager.MoveHabit(this, -1);
+                    break;
+                case Direction.Down:
+                    HabitManager.HabitManager.MoveHabit(this, 1);
+                    break;
+            }
         }
     }
 

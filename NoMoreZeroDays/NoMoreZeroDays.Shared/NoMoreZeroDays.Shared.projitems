@@ -34,8 +34,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\BackHistoryStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ProgressBarSmoother.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\IStackable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StatusBarManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Habit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLiteAsync.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tests\TestAddingHabits.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HabitViewModel.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using NoMoreZeroDays.Common;
+using NoMoreZeroDays.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,6 +34,14 @@ namespace NoMoreZeroDays
         private TransitionCollection transitions;
 #endif
 
+        #region Database data
+        public string DBPath
+        {
+            get;
+            set;
+        }
+        #endregion
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -64,15 +73,15 @@ namespace NoMoreZeroDays
             }
 #endif
 
-            try
+            #region Database
+            this.DBPath = Path.Combine(Windows.Storage.ApplicationData.Current.RoamingFolder.Path, "Habits.sqlite");
+            
+            // Initialize the database if necessary
+            using (var db = new SQLite.SQLiteConnection(this.DBPath))
             {
-                var data = ApplicationData.Current.LocalSettings.Values["kappa"];
-                Debug.WriteLine(data);
+                db.CreateTable<Habit>();
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
+            #endregion
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -139,9 +148,8 @@ namespace NoMoreZeroDays
             Random random = new Random();
             EdgeTransitionLocation randomEdge = (EdgeTransitionLocation)values.GetValue(random.Next(values.Length));
 
+            await HabitManager.HabitSerializer.LoadFromDB();
             rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new EdgeUIThemeTransition() { Edge = randomEdge } };
-            Debug.WriteLine("FIRST RUN");
-            await HabitManager.HabitSerializer.Load();
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
         }
 #endif
@@ -153,11 +161,11 @@ namespace NoMoreZeroDays
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private async void OnSuspending(object sender, SuspendingEventArgs e)
+        private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             // TODO: Save application state and stop any background activity
-            await HabitManager.HabitSerializer.Save();
+            //await HabitManager.HabitSerializer.Save();
             deferral.Complete();
         }
     }

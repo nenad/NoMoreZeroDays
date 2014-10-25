@@ -9,11 +9,17 @@ namespace NoMoreZeroDays.HabitManager
 {
     public class HabitManager
     {
+        //Static help variables
+        static List<HabitControl> HabitControls = new List<HabitControl>();
+
+        public static int ResetTime = 6;
+        public static int ReminderTime = 18;
+
+
         public static void SetHabits(List<HabitControl> NewHabitControls)
         {
             HabitControls = NewHabitControls;
         }
-        static List<HabitControl> HabitControls = new List<HabitControl>();
 
         public static void AddHabit(HabitControl HabitControl)
         {
@@ -22,36 +28,27 @@ namespace NoMoreZeroDays.HabitManager
         public static void RemoveHabit(HabitControl habitControl)
         {
             Habit habit = habitControl.DataContext as Habit;
-            Debug.WriteLine(habit.Name);
-            HabitControls.Remove(habitControl);
-            HabitList.Instance.Remove(habit);
-            HabitControl.ActiveControl = null;
+            HabitList.Instance.RemoveHabit(habit);
         }
 
-        public void ListHeights()
+        public static void MoveHabit(HabitControl habitControl, int distance)
         {
-            for (int i = 0; i < HabitControls.Count; i++)
-            {
-                Debug.WriteLine(HabitControls[i].Height + " - " + HabitControls[i].Translater.TranslateY);
-            }
-        }
-
-        internal static void MoveHabit(HabitControl habitControl, double total)
-        {
-            int index = HabitControls.IndexOf(habitControl);
-            int movedPositions = (int)Math.Ceiling(total / habitControl.ActualHeight);
-            int startFromIndex = Math.Max(0, Math.Min(index - movedPositions, HabitControls.Count));
-
-            Debug.WriteLine(index + " " + movedPositions + " " + startFromIndex);
-
-            HabitControl swappingElement = HabitControls[startFromIndex];
-            HabitControls[index] = swappingElement;
-            HabitControls[startFromIndex] = habitControl;
-
-            Debug.WriteLine("Swapped " + swappingElement.txtHabitName.Text + " with " + habitControl.txtHabitName.Text);
-
-            //HabitItems.Instance.Move(index, startFromIndex);
+            int oldPosition = HabitControls.IndexOf(habitControl);
+            int newPosition = Clamp(oldPosition + distance, 0, HabitControls.Count - 1);
             
+            var oldH = HabitList.Instance[oldPosition];
+            HabitList.Instance[oldPosition] = HabitList.Instance[newPosition];
+            HabitList.Instance[newPosition] = oldH;
+
+            Debug.WriteLine(String.Format("Index: {0}/{1}", oldPosition, HabitControls.Count - 1));
         }
+
+        public static int Clamp(int value, int min, int max)
+        {
+            return (value < min) ? min : (value > max) ? max : value;
+        }
+
+
+
     }
 }

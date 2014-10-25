@@ -44,13 +44,7 @@ namespace NoMoreZeroDays
 
         void HideAddPanel()
         {
-            if (HabitControl.ActiveControl != null)
-            {
-                HabitControl.ActiveControl.IsActive = false;
-                HabitControl.ActiveControl = null;
-                return;
-            }
-            else if (BackHistoryStack.History.Count != 0)
+            if (BackHistoryStack.History.Count != 0)
             {
                 var item = BackHistoryStack.History.Peek();
                 item.Hide();

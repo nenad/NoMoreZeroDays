@@ -9,7 +9,14 @@ namespace NoMoreZeroDays.Models
     {
         public Habit()
         {
+            
+        }
 
+        [SQLite.PrimaryKey, SQLite.AutoIncrement]
+        public int Index
+        {
+            get;
+            set;
         }
 
         public string Name
@@ -35,8 +42,8 @@ namespace NoMoreZeroDays.Models
             get;
             set;
         }
-        /*
-        public DateTime LastDateDone
+
+        public bool IsDoneForToday
         {
             get;
             set;
@@ -44,29 +51,13 @@ namespace NoMoreZeroDays.Models
 
         public int MissedDays
         {
-            get
-            {
-                var now = DateTime.Now;
-                var diff = now - LastDateDone;
-                return diff.Days;
-            }
+            get;
+            set;
         }
-
-        public bool IsDoneForToday
-        {
-            get
-            {
-                var day = DateTime.Now.Day;
-                var month = DateTime.Now.Month;
-                return LastDateDone.Day == day && LastDateDone.Month == month;
-            }
-        }
-         * */
 
         public override string ToString()
         {
-            string formatted = String.Format("{0}, {1} [{2}/{3}]", Name, Description, CurrentDay, Days);
-            return formatted;
+            return String.Format("{0}, {1} [{2}/{3}]", Name, Description, CurrentDay, Days);
         }
 
     }
