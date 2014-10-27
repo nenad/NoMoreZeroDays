@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HabitManager\HabitSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AnimationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\BackHistoryStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ProgressBarSmoother.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\IStackable.cs" />

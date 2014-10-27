@@ -1,4 +1,5 @@
 ﻿using NoMoreZeroDays.Common;
+using NoMoreZeroDays.Helpers;
 using NoMoreZeroDays.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -66,6 +68,32 @@ namespace NoMoreZeroDays
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            #region Register background task
+            bool isRegistered = false;
+
+            foreach (var reg in BackgroundTaskRegistration.AllTasks)
+            {
+                if (reg.Value.Name == "LiveTile")
+                {
+                    isRegistered = true;
+                    break;
+                }
+            }
+
+            if (isRegistered)
+            {
+
+            }
+            else
+            {
+                var builder = new BackgroundTaskBuilder();
+                builder.Name = "LiveTile";
+                builder.TaskEntryPoint = "HabitUpdater.HabitUpdater";
+                var timeTrigger = new TimeTrigger(30, false);
+                builder.SetTrigger(timeTrigger);
+            }
+            #endregion
+
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -75,7 +103,7 @@ namespace NoMoreZeroDays
 
             #region Database
             this.DBPath = Path.Combine(Windows.Storage.ApplicationData.Current.RoamingFolder.Path, "Habits.sqlite");
-            
+
             // Initialize the database if necessary
             using (var db = new SQLite.SQLiteConnection(this.DBPath))
             {
@@ -151,6 +179,7 @@ namespace NoMoreZeroDays
             await HabitManager.HabitSerializer.LoadFromDB();
             rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new EdgeUIThemeTransition() { Edge = randomEdge } };
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
+            StatusBarManager.Hide();
         }
 #endif
 
@@ -161,11 +190,10 @@ namespace NoMoreZeroDays
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            // TODO: Save application state and stop any background activity
-            //await HabitManager.HabitSerializer.Save();
+            await HabitManager.HabitSerializer.SaveToDB();
             deferral.Complete();
         }
     }

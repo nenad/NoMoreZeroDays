@@ -22,5 +22,11 @@ namespace NoMoreZeroDays.HabitManager
             var result = await query.ToListAsync();
             HabitList.Instance.Add(result.ToArray());
         }
+
+        public static async Task SaveToDB()
+        {
+            var db = new SQLite.SQLiteAsyncConnection(app.DBPath);
+            var query = await db.UpdateAllAsync(HabitList.Instance.GetHabits());
+        }
     }
 }

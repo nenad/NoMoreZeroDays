@@ -116,12 +116,15 @@ namespace NoMoreZeroDays.Custom_Controls
             if (Habit.IsDoneForToday)
             {
                 Habit.CurrentDay++;
-                progressDaysLeft.Value += 1;
+
+                AnimationHelper.Play(ResizeCheckmark);
+                //progressDaysLeft.Value += 1;
             }
             else
             {
                 Habit.CurrentDay--;
-                progressDaysLeft.Value -= 1;
+                AnimationHelper.Reverse(ResizeCheckmark);
+                //progressDaysLeft.Value -= 1;
             }
 
         }

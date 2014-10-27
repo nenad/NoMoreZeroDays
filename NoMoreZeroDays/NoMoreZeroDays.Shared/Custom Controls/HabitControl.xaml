@@ -8,7 +8,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:conv="using:NoMoreZeroDays.Converters"
     xmlns:helpers="using:NoMoreZeroDays.Helpers"
+    
     mc:Ignorable="d" VerticalAlignment="Top">
+
+    <UserControl.Resources>
+    </UserControl.Resources>
+
+
     <Grid x:Name="PanelMain" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Holding="PanelMain_Holding" >
         <Grid.Resources>
             <conv:BoolToVisibility x:Key="BoolToVisibilityConv"/>
@@ -38,9 +44,43 @@
                 <TextBlock Grid.Column="0" Grid.Row="1" x:Name="txtHabitDescription" VerticalAlignment="Center" Text="{Binding Description, FallbackValue='Description of habit here'}" Margin="10,0,0,0" FontFamily="Segoe UI" Foreground="White"/>
 
                 <Border Height="70" x:Name="PanelDone" Grid.Column="1" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Tapped="ToggleHabit" Background="{StaticResource NMZDHighlight}" RenderTransformOrigin="0.5,0.5">
+
+                    <Border.Resources>
+                        <Storyboard x:Name="ResizeCheckmark" x:Key="ResizeCheckmark">
+                            <DoubleAnimation 
+                                Storyboard.TargetName="CheckScale"
+                                Storyboard.TargetProperty="ScaleX"
+                                From="1.0"
+                                To="2.0"
+                                Duration="0:0:1"
+                                FillBehavior="HoldEnd"
+                                >
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseIn"></ElasticEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation 
+                                Storyboard.TargetName="CheckScale"
+                                Storyboard.TargetProperty="ScaleY"
+                                From="1.0"
+                                To="2.0"
+                                Duration="0:0:1"
+                                FillBehavior="HoldEnd"
+                                >
+                                <DoubleAnimation.EasingFunction>
+                                    <ElasticEase EasingMode="EaseIn"></ElasticEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </Border.Resources>
                     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <TextBlock x:Name="CheckOK" Canvas.ZIndex="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="✓" Foreground="White" FontFamily="MS Mincho" Visibility="{Binding Path=IsDoneForToday, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=Visible}"/>
-                        <TextBlock x:Name="CheckCancel" Canvas.ZIndex="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="✗" Foreground="White" FontFamily="MS Mincho" Visibility="{Binding Path=IsDoneForToday, Converter={StaticResource BoolToVisibilityRevConv}, FallbackValue=Collapsed}"/>
+                        <TextBlock x:Name="CheckOK" Canvas.ZIndex="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="✓" Foreground="White" FontFamily="MS Mincho" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <CompositeTransform x:Name="CheckScale"/>
+                            </TextBlock.RenderTransform>
+
+                        </TextBlock>
+                        <!--<TextBlock x:Name="CheckCancel" Canvas.ZIndex="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="✗" Foreground="White" FontFamily="MS Mincho" Visibility="{Binding IsDoneForToday, Converter={StaticResource BoolToVisibilityConv}, FallbackValue=Collapsed}"/>-->
                     </Grid>
                 </Border>
                 <!--<Button Content="No" Grid.Column="1" HorizontalAlignment="Stretch" Click="MissedHabit" />-->
